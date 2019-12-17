@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>JS Quiz</title>
+    <style>
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0
+        }
+        
+        .btn_enter {
+            display: block;
+            width: 70px;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid gray;
+            background: white
+        }
+        
+        .btn_enter.on {
+            background: brown;
+            color: #fff
+        }
+
+        .quest_view label {
+            display: block;
+            margin: 15px 0 5px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="bx_quest">
+        <article class="quest">
+            <ol>
+                <li>숫자는 세자리만 입력</li>
+                <li>세자리 입력완료시 버튼 활성화 처리</li>
+                <li>javascript 으로~ 해보기</li>
+            </ol>
+            <strong>Tip</strong>
+            <ul>
+                <li>input의 maxlength 속성을 활용</li>
+                <li>slice() 활용 or 문자열길이 체크?</li>
+            </ul>
+        </article>
+        <article class="quest_view">
+            <div>
+                <label for="auth_num">input[type="text"]</label>
+                <input type="text" id="auth_num" placeholder="숫자 세자리 입력" maxlength="3">
+            </div>
+            <div>
+                <label for="auth_num2">input[type="number"]</label>
+                <input type="number" id="auth_num2" placeholder="숫자 세자리 입력" maxlength="3">
+            </div>
+            <div>
+                <label for="auth_num3">input[type="tel"]</label>
+                <input type="tel" id="auth_num3" placeholder="숫자 세자리 입력" maxlength="3">
+            </div>
+            <button type="button" class="btn_enter">입력</button>
+        </article>
+    </section>
+
+    <script>
+        (function() {
+            checkInputNumber('#auth_num', '.btn_enter');
+            checkInputNumber('#auth_num2', '.btn_enter');
+            checkInputNumber('#auth_num3', '.btn_enter');
+
+            // input 길이 제한 및 버튼 활성화 함수
+            function checkInputNumber(_targetInput, _targetButtonClass) {
+                var input = checkSelector(_targetInput),    // 대상 input
+                    btnSubmit = checkSelector(_targetButtonClass),   // 대상 button
+                    inputMaxLength = input.getAttribute('maxlength'),   // input 최대 길이
+                    btnSubmitClass = btnSubmit.getAttribute('class');   // 초기 button class 저장 변수
+
+                // key down 시 일어나는 이벤트
+                input.addEventListener('keydown', function(e) {   // add EventListener: IE 9 ~
+                    // 입력 값이 숫자가 아니고 && 입력 값이 컨트롤할 수 있는 키가 아닐 때, (== 문자일 때) 입력 막기.
+                    if(!checkNumberKeyCode(e.keyCode)) {
+                        if(!checkControlKeyCode(e.keyCode)) {
+                            e.preventDefault();
+                            e.returnValue = false;
+                            return false;
+                        }
+                    }
+                    // 입력한 값의 길이가 maxLength보다 크거나 같을 때, 입력 막기.
+                    if(input.value.length >= inputMaxLength) {
+                        if(!checkControlKeyCode(e.keyCode)) {
+                            e.returnValue = false;
+                        }
+                    }
+                });
+
+                // key up 시 일어나는 이벤트
+                input.addEventListener('keyup', function(e) {
+                    // 입력한 값의 길이가 maxLength보다 크거나 같을 때,
+                    if(input.value.length >= inputMaxLength) {
+                        // 입력값이 숫자거나 arrow up 키(type="number"일 경우를 위함) 일때, 버튼 활성화
+                        if(!checkControlKeyCode(e.keyCode) || e.keyCode == 38) {
+                            // btnSubmit.classList.add('on');   // IE 10 ~
+                            btnSubmit.setAttribute('class', btnSubmitClass + ' on');    // IE 9 ~
+                        } else {    // 입력값이 숫자 or arrow up 키가 아닐 때, 입력 막기.
+                            e.preventDefault();
+                            e.returnValue = false;
+                        }
+                        return false;
+                    } else {    // 입력한 값의 길이가 maxLength보다 작을 때, 버튼 비활성화
+                        // btnSubmit.classList.remove('on');
+                        btnSubmit.setAttribute('class', btnSubmitClass);
+                    }
+                });
+            }
+
+            // check the number key
+            function checkNumberKeyCode(_keyCode) {
+                return (_keyCode > 47 && _keyCode < 58) || (_keyCode > 95 && _keyCode < 106);
+            }
+
+            // check the control key
+            function checkControlKeyCode(_keyCode) {
+                return _keyCode == 8 || _keyCode == 9 || _keyCode == 13 || _keyCode == 27 || _keyCode == 45 || _keyCode == 46 || _keyCode == 144 || (_keyCode > 15 && _keyCode < 21) || (_keyCode > 32 && _keyCode < 41) || (_keyCode > 111 && _keyCode < 124);
+            }
+
+            // check Id or Class
+            function checkSelector(_selector) {
+                if(_selector[0] == '#') {
+                    return document.getElementById(_selector.slice(1, _selector.length));
+                } else if(_selector[0] == '.') {
+                    return document.querySelector(_selector);
+                } else {
+                    return document.getElementsByTagName(_selector);
+                }
+            }
+        })();
+    </script>
+</body>
+
+</html>

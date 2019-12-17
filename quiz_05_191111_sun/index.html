@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+<style>
+* {margin:0;padding:0;}
+#header{position:relative;width:1020px;height:413px;background-image:url(day-night.jpg);background-position:0px 100%;}
+#header.bg-night-default{background-position:0px 0;}
+.bg-night{background-position:0px 0px;background-repeat:no-repeat;animation:animateSunset 3s linear;animation-fill-mode:both;}
+.bg-day{background-position:0px 100%;background-repeat:no-repeat;animation:animateSunrise 3s linear;animation-fill-mode:both;}
+.bg-night .crt-time {color:#fff;}
+.crt-time{position:absolute;bottom:30px;left:0;transform:translateY(-50%);width:100%;font-size:30px;font-weight:700;line-height:1.5;text-align:center;}
+@keyframes animateSunset {
+	from {background-position:0 100%}
+	to {background-position:0 0}
+}
+@keyframes animateSunrise {
+	from {background-position:0 0}
+	to {background-position:0 100%}
+}
+</style>    
+</head>
+<body>
+<div id="header">
+    <p class="crt-time">00:00:00</p>
+</div>
+<script src="sun-js.js"></script>
+<script>
+(function() {
+    // 성남시 기준
+    var header = document.querySelector('#header'),
+        sunriseDate = new Date().sunrise(37.44722, 127.13750),
+        sunsetDate = new Date().sunset(37.44722, 127.13750),
+        crtTime = changeSeconds([new Date().getHours(), new Date().getMinutes(), new Date().getSeconds()]),
+        sunrise = 0, sunset = 0, timer = 0;
+
+    // 초단위 변환 (시+분+초)
+    function changeSeconds(_time) {
+        var time = _time,
+            seconds = 0;
+        for (var i in time) {
+            if (time.hasOwnProperty(i)) {
+                if(i == 0) { time[i] = time[i] * 60 * 60;}  // 시
+                else if(i == 1) { time[i] = time[i] * 60; } // 분
+                else { time[i] = time[i]; } // 초
+                seconds += time[i]; // 시+분+초
+            }
+        }
+        return seconds * 1000;
+    }
+    // timer 계산
+    function setTimer(_sunrise, _sunset, _crtTime) {
+        // day
+        if(_crtTime >= _sunrise && _crtTime < _sunset) {
+            header.setAttribute('class', 'bg-day');
+            return _sunset - _crtTime;
+        } else {    // night
+            header.setAttribute('class', 'bg-night');
+            if(_crtTime > _sunset) {
+                return (_sunrise - _crtTime) + (changeSeconds([23,59,59]) - crtTime);
+            } else {
+                return _sunrise - _crtTime;
+            }
+        }
+    }
+    // day/night 변환
+    function changeDayNight() {
+        // clear setTimeout
+        clearTimeout(setTimeoutRun);
+
+        sunriseDate = new Date().sunrise(37.44722, 127.13750);
+        sunsetDate = new Date().sunset(37.44722, 127.13750);
+        crtTime = changeSeconds([new Date().getHours(), new Date().getMinutes(), new Date().getSeconds()]);
+        timer = setTimer(changeSeconds(sunrise), changeSeconds(sunset), crtTime);
+
+        // test 용
+        timer = setTimer(changeSeconds([7,15,20]), changeSeconds([7,16,15]), crtTime);
+
+        // set timeout 실행
+        setTimeoutRun();
+    }
+    // set timeout 선언
+    function setTimeoutRun() {
+        setTimeout(function() {
+            changeDayNight();
+        }, timer);
+        console.log(timer);
+    }
+    function run() {
+        setTimeoutRun();
+        
+        // 시/분/초 확인용
+        setInterval(function() {
+            var date = new Date(),
+                time = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds(),
+                elTime = document.querySelector('.crt-time'),
+                elTime = elTime.replaceChild(document.createTextNode(time), elTime.firstChild);
+        }, 1000);
+    }
+    run();
+})();
+</script>
+</body>
+</html>

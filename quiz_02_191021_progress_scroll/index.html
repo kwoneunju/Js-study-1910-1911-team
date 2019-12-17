@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>JS Quiz</title>
+    <style>
+        progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <progress value="0" max="100"></progress>
+    <p>Schauer das aus sage was und, hinweggeschwunden fühlt den labyrinthisch welt sich tränen ich ihr, diesmal wird die meinem unbekannten, steigen der nennt ein fühlt und gestalten, bang lauf tage ich mein. Wird ernsten einer lispelnd und ihr, alten
+        nach die nun ein. Ihr ist wenn in ersten getäuscht bringt.</p>
+    <p>Schauer das aus sage was und, hinweggeschwunden fühlt den labyrinthisch welt sich tränen ich ihr, diesmal wird die meinem unbekannten, steigen der nennt ein fühlt und gestalten, bang lauf tage ich mein. Wird ernsten einer lispelnd und ihr, alten
+        nach die nun ein. Ihr ist wenn in ersten getäuscht bringt.</p>
+    <p>Schauer das aus sage was und, hinweggeschwunden fühlt den labyrinthisch welt sich tränen ich ihr, diesmal wird die meinem unbekannten, steigen der nennt ein fühlt und gestalten, bang lauf tage ich mein. Wird ernsten einer lispelnd und ihr, alten
+        nach die nun ein. Ihr ist wenn in ersten getäuscht bringt.</p>
+    <p>Schauer das aus sage was und, hinweggeschwunden fühlt den labyrinthisch welt sich tränen ich ihr, diesmal wird die meinem unbekannten, steigen der nennt ein fühlt und gestalten, bang lauf tage ich mein. Wird ernsten einer lispelnd und ihr, alten
+        nach die nun ein. Ihr ist wenn in ersten getäuscht bringt.</p>
+    <p>Schauer das aus sage was und, hinweggeschwunden fühlt den labyrinthisch welt sich tränen ich ihr, diesmal wird die meinem unbekannten, steigen der nennt ein fühlt und gestalten, bang lauf tage ich mein. Wird ernsten einer lispelnd und ihr, alten
+        nach die nun ein. Ihr ist wenn in ersten getäuscht bringt.</p>
+    <p>Schauer das aus sage was und, hinweggeschwunden fühlt den labyrinthisch welt sich tränen ich ihr, diesmal wird die meinem unbekannten, steigen der nennt ein fühlt und gestalten, bang lauf tage ich mein. Wird ernsten einer lispelnd und ihr, alten
+        nach die nun ein. Ihr ist wenn in ersten getäuscht bringt.</p>
+    <p>Schauer das aus sage was und, hinweggeschwunden fühlt den labyrinthisch welt sich tränen ich ihr, diesmal wird die meinem unbekannten, steigen der nennt ein fühlt und gestalten, bang lauf tage ich mein. Wird ernsten einer lispelnd und ihr, alten
+        nach die nun ein. Ihr ist wenn in ersten getäuscht bringt.</p>
+    <p>Schauer das aus sage was und, hinweggeschwunden fühlt den labyrinthisch welt sich tränen ich ihr, diesmal wird die meinem unbekannten, steigen der nennt ein fühlt und gestalten, bang lauf tage ich mein. Wird ernsten einer lispelnd und ihr, alten
+        nach die nun ein. Ihr ist wenn in ersten getäuscht bringt.</p>
+    <p>Schauer das aus sage was und, hinweggeschwunden fühlt den labyrinthisch welt sich tränen ich ihr, diesmal wird die meinem unbekannten, steigen der nennt ein fühlt und gestalten, bang lauf tage ich mein. Wird ernsten einer lispelnd und ihr, alten
+        nach die nun ein. Ihr ist wenn in ersten getäuscht bringt.</p>
+    <p>Schauer das aus sage was und, hinweggeschwunden fühlt den labyrinthisch welt sich tränen ich ihr, diesmal wird die meinem unbekannten, steigen der nennt ein fühlt und gestalten, bang lauf tage ich mein. Wird ernsten einer lispelnd und ihr, alten
+        nach die nun ein. Ihr ist wenn in ersten getäuscht bringt.</p>
+</div>
+<script>
+    (function(){
+        var _html = document.querySelector('html') != undefined || document.querySelector('body') != 0 ? document.querySelector('html') : document.querySelector('body'),
+            progress = document.querySelector('progress'),
+            crtScroll = document.querySelector('html').scrollTop,
+            lastScroll = 0,
+            scroll = (_html.scrollHeight - window.innerHeight) / 100,
+            pgVal = crtScroll / scroll;
+        
+        document.addEventListener('scroll', function(e) {
+            crtScroll = document.querySelector('html').scrollTop;
+            pgVal = crtScroll / scroll;
+            
+            if(crtScroll >= 0 || crtScroll <= _html.scrollHeight - window.innerHeight) {
+                progress.setAttribute('value', pgVal);
+            }
+        });
+    })();
+</script>
+</body>
+
+</html>
